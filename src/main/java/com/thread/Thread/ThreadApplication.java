@@ -8,8 +8,6 @@ public class ThreadApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ThreadApplication.class, args);
-
-
 	}
 
 }
