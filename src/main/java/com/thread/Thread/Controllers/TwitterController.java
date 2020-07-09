@@ -1,6 +1,7 @@
-package com.thread.Thread.controllers;
+package com.thread.Thread.Controllers;
 
-import com.thread.Thread.models.TwitterModel;
+import com.thread.Thread.Models.Model;
+import com.thread.Thread.Models.TwitterModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,17 +13,17 @@ import java.util.Base64;
 @RestController
 @RequestMapping("/twitter")
 public class TwitterController implements Controller {
-
+    private Twitter twitter;
     @Override
     @GetMapping("/search")
-    public ResponseEntity<List> search(@RequestParam String q) {
+    public ResponseEntity<List<?>> search(@RequestParam String q) {
         //Set up decoder to decode encoded query
         byte[] encodedBytes = Base64.getEncoder().encode(q.getBytes());
         byte[] decodedBytes = Base64.getDecoder().decode(encodedBytes);
         String decodedString = new String(decodedBytes);
 
         //Twitter4j Setup
-        Twitter twitter = new TwitterFactory().getSingleton();
+        twitter = TwitterFactory.getSingleton();
         Query query = new Query("source: " + decodedString);
 
         //Search tweets related to the query
@@ -39,14 +40,14 @@ public class TwitterController implements Controller {
             System.out.println("@" + status.getUser().getScreenName() + ":" + status.getText());
         }
 
-        return new ResponseEntity<List>(tweets, HttpStatus.OK);
+        return new ResponseEntity<>(tweets, HttpStatus.OK);
     }
 
     @Override
     @PostMapping("/share")
-    public ResponseEntity<TwitterModel> share(@RequestBody TwitterModel body) {
+    public ResponseEntity<TwitterModel> share(@RequestBody Model body) {
         //Twitter4j Setup
-        Twitter twitter = new TwitterFactory().getSingleton();
+        twitter = TwitterFactory.getSingleton();
 
         //Retweet status based on id given in request body
         try {
@@ -55,25 +56,25 @@ public class TwitterController implements Controller {
             e.printStackTrace();
         }
 
-        return new ResponseEntity<TwitterModel>(body, HttpStatus.OK);
+        return new ResponseEntity<>((TwitterModel) body, HttpStatus.OK);
     }
 
     @Override
     @PostMapping("/like")
-    public ResponseEntity<TwitterModel> like(@RequestBody TwitterModel body){
+    public ResponseEntity<TwitterModel> react(@RequestBody Model body){
         /*
-           ****************Fill in body****************
+           TODO****************Fill in body****************
         */
-        return new ResponseEntity<TwitterModel>(body, HttpStatus.OK);
+        return new ResponseEntity<>((TwitterModel) body, HttpStatus.OK);
     }
 
     @Override
     @PostMapping("/comment")
-    public ResponseEntity<TwitterModel> comment(@RequestBody TwitterModel body){
+    public ResponseEntity<TwitterModel> comment(@RequestBody Model body){
         /*
-           ****************Fill in body****************
+           TODO****************Fill in body****************
         */
-        return new ResponseEntity<TwitterModel>(body, HttpStatus.OK);
+        return new ResponseEntity<>((TwitterModel) body, HttpStatus.OK);
     }
 
 }
