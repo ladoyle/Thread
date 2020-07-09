@@ -1,31 +1,16 @@
 package com.thread.Thread.Controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-public interface  Controller {
-    enum socialPlatform {
-        FACEBOOK,
-        TWITTER,
-        INSTAGRAM
-    }
+import com.thread.Thread.Models.Model;
+import org.springframework.http.ResponseEntity;
 
-    enum  reactionType{
-        FACELIKE,
-        TWITLIKE,
-        INSTLIKE
-    }
+public interface Controller {
 
-    @GetMapping("/search")
-    void search(String queryText, socialPlatform platform);
-    @PostMapping("/reaction")
-    void reaction(reactionType reaction);
-    @PostMapping("/comment")
-    void comment(String commentText);
-    @PostMapping("/share")
-    void share();
+    ResponseEntity search(String q);
+
+    ResponseEntity share(Model body);
+
+    ResponseEntity react(Model body);
+
+    ResponseEntity comment(Model body);
 }
-
-
