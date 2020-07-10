@@ -1,6 +1,5 @@
 package com.thread.Thread.controllers;
 
-import com.thread.Thread.models.Model;
 import com.thread.Thread.models.TwitterModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,11 +11,10 @@ import java.util.Base64;
 
 @RestController
 @RequestMapping("/twitter")
-public class TwitterController implements Controller {
+public class TwitterController extends Controller {
     private Twitter twitter;
 
     @Override
-    @GetMapping("/search")
     public ResponseEntity<List<?>> search(@RequestParam String q) {
         //Set up decoder to decode encoded query
         byte[] encodedBytes = Base64.getEncoder().encode(q.getBytes());
@@ -44,9 +42,8 @@ public class TwitterController implements Controller {
         return new ResponseEntity<>(tweets, HttpStatus.OK);
     }
 
-    @Override
     @PostMapping("/share")
-    public ResponseEntity<TwitterModel> share(@RequestBody Model body) {
+    public ResponseEntity<TwitterModel> share(@RequestBody TwitterModel body) {
         //Twitter4j Setup
         twitter = TwitterFactory.getSingleton();
 
@@ -57,12 +54,12 @@ public class TwitterController implements Controller {
             e.printStackTrace();
         }
 
-        return new ResponseEntity<>((TwitterModel) body, HttpStatus.OK);
+        System.out.println(body.getId());
+        return new ResponseEntity<>(body, HttpStatus.OK);
     }
 
-    @Override
     @PostMapping("/react")
-    public ResponseEntity<TwitterModel> react(@RequestBody Model body) {
+    public ResponseEntity<TwitterModel> react(@RequestBody TwitterModel body) {
         //Twitter4j Setup
         twitter = TwitterFactory.getSingleton();
 
@@ -79,12 +76,11 @@ public class TwitterController implements Controller {
         }
 
 
-        return new ResponseEntity<>((TwitterModel) body, HttpStatus.OK);
+        return new ResponseEntity<>(body, HttpStatus.OK);
     }
 
-    @Override
     @PostMapping("/comment")
-    public ResponseEntity<TwitterModel> comment(@RequestBody Model body) {
+    public ResponseEntity<TwitterModel> comment(@RequestBody TwitterModel body) {
         twitter = TwitterFactory.getSingleton();
 
         //Comment status based on id given in request body
@@ -99,7 +95,7 @@ public class TwitterController implements Controller {
             e.printStackTrace();
         }
 
-
-        return new ResponseEntity<>((TwitterModel) body, HttpStatus.OK);
+        return new ResponseEntity<>(body, HttpStatus.OK);
     }
+
 }
