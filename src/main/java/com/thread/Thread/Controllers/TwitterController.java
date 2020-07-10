@@ -1,7 +1,7 @@
-package com.thread.Thread.Controllers;
+package com.thread.Thread.controllers;
 
-import com.thread.Thread.Models.Model;
-import com.thread.Thread.Models.TwitterModel;
+import com.thread.Thread.models.Model;
+import com.thread.Thread.models.TwitterModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +14,7 @@ import java.util.Base64;
 @RequestMapping("/twitter")
 public class TwitterController implements Controller {
     private Twitter twitter;
+
     @Override
     @GetMapping("/search")
     public ResponseEntity<List<?>> search(@RequestParam String q) {
@@ -60,21 +61,45 @@ public class TwitterController implements Controller {
     }
 
     @Override
-    @PostMapping("/like")
-    public ResponseEntity<TwitterModel> react(@RequestBody Model body){
-        /*
-           TODO****************Fill in body****************
-        */
+    @PostMapping("/react")
+    public ResponseEntity<TwitterModel> react(@RequestBody Model body) {
+        //Twitter4j Setup
+        twitter = TwitterFactory.getSingleton();
+
+        //Comment status based on id given in request body
+        try {
+            //Get status based on id given in request body
+            Status status = twitter.showStatus(body.getId());
+            //Reply to that status with a comment
+            Status reply = twitter.updateStatus(
+                    new StatusUpdate(" @" + status.getUser().getScreenName() + " " + body.getMessage()).inReplyToStatusId(body.getId())
+            );
+        } catch (TwitterException e) {
+            e.printStackTrace();
+        }
+
+
         return new ResponseEntity<>((TwitterModel) body, HttpStatus.OK);
     }
 
     @Override
     @PostMapping("/comment")
-    public ResponseEntity<TwitterModel> comment(@RequestBody Model body){
-        /*
-           TODO****************Fill in body****************
-        */
+    public ResponseEntity<TwitterModel> comment(@RequestBody Model body) {
+        twitter = TwitterFactory.getSingleton();
+
+        //Comment status based on id given in request body
+        try {
+            //Get status based on id given in request body
+            Status status = twitter.showStatus(body.getId());
+            //Reply to that status with a comment
+            Status reply = twitter.updateStatus(
+                    new StatusUpdate(" @" + status.getUser().getScreenName() + " " + body.getMessage()).inReplyToStatusId(body.getId())
+            );
+        } catch (TwitterException e) {
+            e.printStackTrace();
+        }
+
+
         return new ResponseEntity<>((TwitterModel) body, HttpStatus.OK);
     }
-
 }
