@@ -1,9 +1,8 @@
 package com.thread.Thread.models;
 
-public abstract class Model {
-    long id;
-    String message;
-
-    abstract long getId();
-    abstract String getMessage();
+public interface Model {
+    long id = -1;
+    String message = "";
+    public long getId();
+    public String getMessage();
 }

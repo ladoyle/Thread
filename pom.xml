@@ -39,6 +39,8 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+    
+=======
 		<!-- Dependency for Twitter scraping -->
 		<dependency>
 			<groupId>org.twitter4j</groupId>
