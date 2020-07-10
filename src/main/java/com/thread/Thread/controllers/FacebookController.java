@@ -1,6 +1,6 @@
-package com.thread.Thread.Controllers;
+package com.thread.Thread.controllers;
 
-import com.thread.Thread.Models.Model;
+import com.thread.Thread.models.Model;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
