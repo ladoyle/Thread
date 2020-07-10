@@ -1,13 +1,13 @@
-package com.thread.Thread.Controllers;
+package com.thread.Thread.controllers;
 
-import com.thread.Thread.Models.Model;
+import com.thread.Thread.models.Model;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/Facebook")
-public class FacebookController implements Controller {
+public class FacebookController extends Controller {
 
     @Override
     public ResponseEntity search(String q) {
