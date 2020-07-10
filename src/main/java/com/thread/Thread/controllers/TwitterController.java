@@ -61,18 +61,38 @@ public class TwitterController implements Controller {
     @Override
     @PostMapping("/like")
     public ResponseEntity<TwitterModel> like(@RequestBody TwitterModel body){
-        /*
-           ****************Fill in body****************
-        */
+        //Twitter4j Setup
+        Twitter twitter = new TwitterFactory().getSingleton();
+
+        //Favorite status based on id given in request body
+        try {
+            twitter.createFavorite(body.getId());
+        } catch (TwitterException e) {
+            e.printStackTrace();
+        }
+
         return new ResponseEntity<TwitterModel>(body, HttpStatus.OK);
     }
 
     @Override
     @PostMapping("/comment")
     public ResponseEntity<TwitterModel> comment(@RequestBody TwitterModel body){
-        /*
-           ****************Fill in body****************
-        */
+        //Twitter4j Setup
+        Twitter twitter = new TwitterFactory().getSingleton();
+
+        //Comment status based on id given in request body
+        try {
+            //Get status based on id given in request body
+            Status status = twitter.showStatus(body.getId());
+            //Reply to that status with a comment
+            Status reply = twitter.updateStatus(
+                    new StatusUpdate(" @" + status.getUser().getScreenName() + " " + body.getMessage()).inReplyToStatusId(body.getId())
+            );
+        } catch (TwitterException e) {
+            e.printStackTrace();
+        }
+
+
         return new ResponseEntity<TwitterModel>(body, HttpStatus.OK);
     }
 
