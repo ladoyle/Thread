@@ -15,7 +15,7 @@ public class TwitterController extends Controller {
     private Twitter twitter;
 
     @Override
-    public ResponseEntity<List<?>> search(@RequestParam String q) {
+    public ResponseEntity<List<Status>> search(@RequestParam String q) {
         //Set up decoder to decode encoded query
         byte[] encodedBytes = Base64.getEncoder().encode(q.getBytes());
         byte[] decodedBytes = Base64.getDecoder().decode(encodedBytes);
@@ -39,63 +39,109 @@ public class TwitterController extends Controller {
             System.out.println("@" + status.getUser().getScreenName() + ":" + status.getText());
         }
 
+        if(result == null){
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
         return new ResponseEntity<>(tweets, HttpStatus.OK);
     }
 
     @PostMapping("/share")
-    public ResponseEntity<TwitterModel> share(@RequestBody TwitterModel body) {
+    public ResponseEntity<Status> share(@RequestBody TwitterModel body) {
         //Twitter4j Setup
         twitter = TwitterFactory.getSingleton();
+        Status retweet = null;
 
         //Retweet status based on id given in request body
         try {
-            twitter.retweetStatus(body.getId());
+            retweet = twitter.retweetStatus(body.getId());
         } catch (TwitterException e) {
             e.printStackTrace();
         }
 
-        System.out.println(body.getId());
-        return new ResponseEntity<>(body, HttpStatus.OK);
+        if(retweet == null){
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(retweet, HttpStatus.OK);
     }
 
     @PostMapping("/react")
-    public ResponseEntity<TwitterModel> react(@RequestBody TwitterModel body) {
+    public ResponseEntity<Status> react(@RequestBody TwitterModel body) {
         //Twitter4j Setup
         twitter = TwitterFactory.getSingleton();
+        Status reaction = null;
 
-        //Comment status based on id given in request body
+        //Favorite status based on id given in request body
         try {
-            //Get status based on id given in request body
-            Status status = twitter.showStatus(body.getId());
-            //Reply to that status with a comment
-            Status reply = twitter.updateStatus(
-                    new StatusUpdate(" @" + status.getUser().getScreenName() + " " + body.getMessage()).inReplyToStatusId(body.getId())
-            );
+            reaction = twitter.createFavorite(body.getId());
         } catch (TwitterException e) {
             e.printStackTrace();
         }
 
-
-        return new ResponseEntity<>(body, HttpStatus.OK);
+        if(reaction == null){
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(reaction, HttpStatus.OK);
     }
 
     @PostMapping("/comment")
-    public ResponseEntity<TwitterModel> comment(@RequestBody TwitterModel body) {
+    public ResponseEntity<Status> comment(@RequestBody TwitterModel body) {
+        //Twitter4j Setup
         twitter = TwitterFactory.getSingleton();
+        Status comment = null;
 
         //Comment status based on id given in request body
         try {
             //Get status based on id given in request body
             Status status = twitter.showStatus(body.getId());
             //Reply to that status with a comment
-            Status reply = twitter.updateStatus(
+            comment = twitter.updateStatus(
                     new StatusUpdate(" @" + status.getUser().getScreenName() + " " + body.getMessage()).inReplyToStatusId(body.getId())
             );
         } catch (TwitterException e) {
             e.printStackTrace();
         }
 
-        return new ResponseEntity<>(body, HttpStatus.OK);
+        if(comment == null){
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(comment, HttpStatus.OK);
     }
 
+    @DeleteMapping("/share")
+    public ResponseEntity<Status> unshared(@RequestBody TwitterModel body) {
+        //Twitter4j Setup
+        twitter = TwitterFactory.getSingleton();
+        Status retweet = null;
+
+        //Retweet status based on id given in request body
+        try {
+            retweet = twitter.destroyStatus(body.getId());
+        } catch (TwitterException e) {
+            e.printStackTrace();
+        }
+
+        if(retweet == null){
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(retweet, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/react")
+    public ResponseEntity<Status> unreact (@RequestBody TwitterModel body) {
+        //Twitter4j Setup
+        twitter = TwitterFactory.getSingleton();
+        Status reaction = null;
+
+        //Retweet status based on id given in request body
+        try {
+            reaction = twitter.destroyFavorite(body.getId());
+        } catch (TwitterException e) {
+            e.printStackTrace();
+        }
+
+        if(reaction == null){
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(reaction, HttpStatus.OK);
+    }
 }
