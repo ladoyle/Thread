@@ -28,4 +28,11 @@ public class FacebookController extends Controller {
     public ResponseEntity comment(Model body) {
         return null;
     }
+
+    @Override
+    public ResponseEntity unshared(Model body) { return null; }
+
+    @Override
+    public ResponseEntity unreact(Model body) { return null; }
+
 }
