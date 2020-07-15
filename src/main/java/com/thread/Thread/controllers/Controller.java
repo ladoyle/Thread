@@ -11,4 +11,6 @@ public abstract class Controller {
     ResponseEntity<?> share(Model body) { return null; }
     ResponseEntity<?> react(Model body) { return null; }
     ResponseEntity<?> comment(Model body) { return null; }
+    ResponseEntity<?> unshared(Model body) { return null; }
+    ResponseEntity<?> unreact(Model body) { return null; }
 }
