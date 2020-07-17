@@ -20,15 +20,15 @@ public class FacebookController extends Controller {
     private String authURL = "https://287242839181671graph.facebook.com/oauth/authorize?type=user_agent&client_id="+appID
             +"&redirect_uri="+domain+"&scope="+permissions;
     // This will be replaced with dynamic userAccessToken
-    private String userAccessToken = "??? need a new one!!!";
+    private String userAccessToken = "EAAlbeYvpA10BACL9jbckq0RLFC3gSwfFACPNLFmtiZCyWDFrOTeRmEeyNJaWq6VkLGuvmxkg2LlxigZCi4LZCBZA1Mj8gXnxrfZBptfof7aKI8XZAbofNJWOEVJeRnkDAHPEnim9NmVMjcTCEkMHDRHiTxxHHIGTem78eFmE6z7bEXWaIxCAMoJSM7mC6us28UR1vPd0vgoZCFiyYIpgkXUPTAbpiRpYoZBY01OIhExOJwZDZD";
+
 
     //Facebook userFB = null;
     // replace this v with ^ + initializing it in the login
     Facebook userFB = new FacebookTemplate(userAccessToken); // is Thread right to pass
 
     public ResponseEntity login() {
-
-
+        // TODO
 //        // This will be the last thing after successful login
 //        userFB = new FacebookTemplate(userAccessToken, "Thread"); // is Thread right to pass
 //        System.out.println("FB Login");
@@ -48,13 +48,13 @@ public class FacebookController extends Controller {
         }
 
         try {
-            System.out.println("userFB is try = " + userFB);
-
+            System.out.println("post will be = " + userFB.feedOperations().getHomeFeed());
             posts = userFB.feedOperations().getHomeFeed();
+
         }
         catch (org.springframework.social.ApiException ignored){
-            System.out.println("here???");
             System.out.println(ignored.getMessage());
+          return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
         System.out.println(">>> "+ posts);
         // search through posts and find the relevant ones
