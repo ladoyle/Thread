@@ -23,6 +23,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-rest</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -39,17 +40,26 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
 		<!-- Dependency for Twitter scraping -->
 		<dependency>
 			<groupId>org.twitter4j</groupId>
 			<artifactId>twitter4j-core</artifactId>
 			<version>4.0.7</version>
 		</dependency>
+
 		<!-- Dependency for Facebook scraping -->
 		<dependency>
 			<groupId>org.springframework.social</groupId>
 			<artifactId>spring-social-facebook</artifactId>
 			<version>2.0.3.RELEASE</version>
+		</dependency>
+
+		<!-- Dependency for Instagram API -->
+		<dependency>
+			<groupId>org.brunocvcunha.instagram4j</groupId>
+			<artifactId>instagram4j</artifactId>
+			<version>1.14</version>
 		</dependency>
 	</dependencies>
 
