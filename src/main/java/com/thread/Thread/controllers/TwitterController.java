@@ -54,6 +54,7 @@ public class TwitterController extends Controller {
             String accessTokenSecretString = accessToken.getTokenSecret();
 
             Map<String, String> obj = new HashMap<String, String>();
+            obj.put("message", "Successful authorization!");
             obj.put("screenName", screenName);
             obj.put("userId", userIdString);
             obj.put("accessToken", accessTokenString);
@@ -64,7 +65,9 @@ public class TwitterController extends Controller {
             request.getSession().removeAttribute("requestToken");
             return new ResponseEntity<>(obj, HttpStatus.OK);
         } catch (TwitterException e) {
-            throw new ServletException(e);
+            Map<String, String> obj = new HashMap<String, String>();
+            obj.put("message", "Twitter service may be unavailable at this time. Please try again later.");
+            return new ResponseEntity<>(obj, HttpStatus.SERVICE_UNAVAILABLE);
         }
     }
 
@@ -72,18 +75,19 @@ public class TwitterController extends Controller {
     public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException{
         request.getSession().invalidate();
         response.sendRedirect(request.getContextPath()+ "/");
+        twitter.setOAuthAccessToken(null);
     }
 
-    /*
+    //Dummy endpoint
     @GetMapping("/post")
     public ResponseEntity<Status> post(HttpServletRequest request, HttpServletResponse response) throws IOException {
         //Twitter4j Setup
-        twitter = (Twitter)request.getSession().getAttribute("twitter");
+        twitter = TwitterFactory.getSingleton();
         Status retweet = null;
 
         //Retweet status based on id given in request body
         try {
-            retweet = twitter.updateStatus("Testing Twitter");
+            retweet = twitter.updateStatus("Testing twitter 2");
         } catch (TwitterException e) {
             e.printStackTrace();
         }
@@ -94,7 +98,7 @@ public class TwitterController extends Controller {
         response.sendRedirect(request.getContextPath()+ "/");
         return new ResponseEntity<>(retweet, HttpStatus.OK);
     }
-    */
+
 
     @Override
     public ResponseEntity<List<Status>> search(@RequestParam String q) {
