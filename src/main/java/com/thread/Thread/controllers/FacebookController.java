@@ -19,8 +19,8 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/Facebook")
 public class FacebookController extends Controller {
 
-    private final String appID = "287242839181671";
-    private final String appSecret = "ab1eb7052493f7fe024f9dbc70593cc0";
+    private final String appID = "";
+    private final String appSecret = "";
     private Facebook facebook;
     private AccessGrant accessToken;
 
