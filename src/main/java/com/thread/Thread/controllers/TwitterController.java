@@ -22,7 +22,7 @@ import java.util.Map;
 public class TwitterController extends Controller {
     private Twitter twitter;
 
-
+    /*
     @GetMapping("/login")
     public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         twitter = TwitterFactory.getSingleton();
@@ -31,7 +31,9 @@ public class TwitterController extends Controller {
         try {
             StringBuffer callbackURL = request.getRequestURL();
             callbackURL.append("/callback");
+            System.out.println("Callback url: " + callbackURL.toString());
             RequestToken requestToken = twitter.getOAuthRequestToken(callbackURL.toString());
+            System.out.println("Authentication url: " + requestToken.getAuthenticationURL());
             request.getSession().setAttribute("requestToken", requestToken);
             response.sendRedirect(requestToken.getAuthenticationURL());
 
@@ -77,17 +79,26 @@ public class TwitterController extends Controller {
         response.sendRedirect(request.getContextPath()+ "/");
         twitter.setOAuthAccessToken(null);
     }
+    */
+
+    @PostMapping("/login")
+    public void login(@RequestBody TwitterModel body) throws ServletException, IOException{
+        twitter = TwitterFactory.getSingleton();
+        AccessToken accessToken = new AccessToken(body.getToken(), body.getTokenSecret());
+        twitter.setOAuthConsumer(body.getKey(), body.getKeySecret());
+        twitter.setOAuthAccessToken(accessToken);
+    }
 
     //Dummy endpoint
-    @GetMapping("/post")
-    public ResponseEntity<Status> post(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @PostMapping("/post")
+    public ResponseEntity<Status> post(@RequestBody TwitterModel body) throws IOException {
         //Twitter4j Setup
         twitter = TwitterFactory.getSingleton();
         Status retweet = null;
 
         //Retweet status based on id given in request body
         try {
-            retweet = twitter.updateStatus("Testing twitter 2");
+            retweet = twitter.updateStatus(body.getMessage());
         } catch (TwitterException e) {
             e.printStackTrace();
         }
@@ -95,7 +106,7 @@ public class TwitterController extends Controller {
         if(retweet == null){
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
-        response.sendRedirect(request.getContextPath()+ "/");
+        //response.sendRedirect(request.getContextPath()+ "/");
         return new ResponseEntity<>(retweet, HttpStatus.OK);
     }
 
