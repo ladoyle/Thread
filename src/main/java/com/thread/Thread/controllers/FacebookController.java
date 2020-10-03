@@ -15,13 +15,12 @@ public class FacebookController extends Controller{
     private static boolean isAppAuthorizationSet = false;
 
     @PostMapping("/login")
-    public boolean login(@RequestBody FaceBookModel body) {
+    public ResponseEntity<?> login(@RequestBody FaceBookModel body) {
         System.out.println("FB Login");
 
         facebook = FacebookFactory.getSingleton();
         AccessToken accessToken;
-        AccessToken extendedToken = null;
-        boolean tokenSuccess = true;
+        AccessToken extendedToken;
 
         try {
             accessToken = new AccessToken(body.getToken(), Long.parseLong(body.getTokenSecret()));
@@ -36,24 +35,24 @@ public class FacebookController extends Controller{
         }
         catch (FacebookException e) {
             e.printStackTrace();
-            tokenSuccess = false;
+            return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         catch (Exception e) {
             e.printStackTrace();
-            tokenSuccess = false;
+            return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         if(extendedToken != null)
             System.out.println(extendedToken.toString());
         else
             System.out.println("empty token");
-        return tokenSuccess;
+        return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<?> search(@RequestParam String query) {
         System.out.println("FB Search");
         query = query.toLowerCase();
-        ResponseList<Post> posts = null;
+        ResponseList<Post> posts;
         ArrayList<Post> results = new ArrayList<>();
         try {
              posts = facebook.getFeed();
@@ -64,7 +63,7 @@ public class FacebookController extends Controller{
         }
         catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         if(posts != null) {
             for (Post post : posts) {
@@ -74,7 +73,7 @@ public class FacebookController extends Controller{
             }
         }
 
-        return results.isEmpty() ? new ResponseEntity<>(null, HttpStatus.NO_CONTENT)
+        return results.isEmpty() ? new ResponseEntity<>(null, HttpStatus.OK)
                 : new ResponseEntity<>(results, HttpStatus.OK);
     }
 
@@ -82,6 +81,7 @@ public class FacebookController extends Controller{
     public ResponseEntity<?> share(@RequestBody FaceBookModel body) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
+
     @DeleteMapping("/share")
     public ResponseEntity<?> unshare(@RequestBody FaceBookModel body) {
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -90,18 +90,18 @@ public class FacebookController extends Controller{
     @PostMapping("/react")
     public ResponseEntity<?> react(@RequestBody FaceBookModel body) {
         System.out.println("FB React");
-        return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping("/react")
     public ResponseEntity<?> unreact(@RequestBody FaceBookModel body) {
         System.out.println("FB Unreact");
-        return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/comment")
     public ResponseEntity<?> comment(@RequestBody FaceBookModel body) {
         System.out.println("FB Comment");
-        return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 }
