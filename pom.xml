@@ -48,6 +48,12 @@
 			<version>4.0.7</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.facebook4j</groupId>
+			<artifactId>facebook4j-core</artifactId>
+			<version>[2.4,)</version>
+		</dependency>
+
 		<!-- Dependency for Facebook scraping -->
 		<dependency>
 			<groupId>org.springframework.social</groupId>
@@ -61,7 +67,8 @@
 			<artifactId>instagram4j</artifactId>
 			<version>1.14</version>
 		</dependency>
-	</dependencies>
+
+    </dependencies>
 
 	<build>
 		<plugins>
