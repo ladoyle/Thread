@@ -1,14 +1,11 @@
-package com.thread.Thread.controllers;
+package com.project.thread.controllers;
 
-import com.thread.Thread.models.Model;
+import com.project.thread.models.Model;
 import org.apache.http.client.ClientProtocolException;
-import org.brunocvcunha.instagram4j.requests.InstagramSearchUsernameRequest;
 import org.brunocvcunha.instagram4j.requests.InstagramTagFeedRequest;
 import org.brunocvcunha.instagram4j.requests.payload.InstagramFeedItem;
 import org.brunocvcunha.instagram4j.requests.payload.InstagramFeedResult;
 import org.brunocvcunha.instagram4j.requests.payload.InstagramSearchUsernameResult;
-import org.brunocvcunha.instagram4j.requests.payload.InstagramUser;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

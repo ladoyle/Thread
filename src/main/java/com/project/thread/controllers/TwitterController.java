@@ -1,21 +1,16 @@
-package com.thread.Thread.controllers;
+package com.project.thread.controllers;
 
-import com.thread.Thread.models.TwitterModel;
+import com.project.thread.models.TwitterModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import twitter4j.*;
 import twitter4j.auth.AccessToken;
-import twitter4j.auth.RequestToken;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Base64;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/twitter")

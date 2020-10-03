@@ -1,6 +1,6 @@
-package com.thread.Thread.controllers;
+package com.project.thread.controllers;
 
-import com.thread.Thread.models.FaceBookModel;
+import com.project.thread.models.FacebookModel;
 import facebook4j.*;
 import facebook4j.auth.AccessToken;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ public class FacebookController extends Controller{
     private static boolean isAppAuthorizationSet = false;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody FaceBookModel body) {
+    public ResponseEntity<?> login(@RequestBody FacebookModel body) {
         System.out.println("FB Login");
 
         facebook = FacebookFactory.getSingleton();
@@ -78,29 +78,29 @@ public class FacebookController extends Controller{
     }
 
     @PostMapping("/share")
-    public ResponseEntity<?> share(@RequestBody FaceBookModel body) {
+    public ResponseEntity<?> share(@RequestBody FacebookModel body) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping("/share")
-    public ResponseEntity<?> unshare(@RequestBody FaceBookModel body) {
+    public ResponseEntity<?> unshare(@RequestBody FacebookModel body) {
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/react")
-    public ResponseEntity<?> react(@RequestBody FaceBookModel body) {
+    public ResponseEntity<?> react(@RequestBody FacebookModel body) {
         System.out.println("FB React");
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping("/react")
-    public ResponseEntity<?> unreact(@RequestBody FaceBookModel body) {
+    public ResponseEntity<?> unreact(@RequestBody FacebookModel body) {
         System.out.println("FB Unreact");
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/comment")
-    public ResponseEntity<?> comment(@RequestBody FaceBookModel body) {
+    public ResponseEntity<?> comment(@RequestBody FacebookModel body) {
         System.out.println("FB Comment");
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
