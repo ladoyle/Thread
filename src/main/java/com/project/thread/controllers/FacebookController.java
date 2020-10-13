@@ -19,18 +19,15 @@ public class FacebookController extends Controller{
         System.out.println("FB Login");
 
         facebook = FacebookFactory.getSingleton();
-        AccessToken accessToken;
         AccessToken extendedToken;
 
         try {
-            accessToken = new AccessToken(body.getToken(), Long.parseLong(body.getTokenSecret()));
-            System.out.println(accessToken.toString());
-            String shortLivedToken = accessToken.getToken();
             if(!isAppAuthorizationSet) {
                 facebook.setOAuthAppId(body.getKey(), body.getKeySecret());
                 isAppAuthorizationSet = true;
             }
-            extendedToken = facebook.extendTokenExpiration(shortLivedToken);
+
+            extendedToken = facebook.extendTokenExpiration(body.getToken());
             facebook.setOAuthAccessToken(extendedToken);
         }
         catch (FacebookException e) {
