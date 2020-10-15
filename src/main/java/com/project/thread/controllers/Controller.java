@@ -1,6 +1,6 @@
-package com.thread.Thread.controllers;
+package com.project.thread.controllers;
 
-import com.thread.Thread.models.Model;
+import com.project.thread.models.Model;
 import facebook4j.FacebookException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,4 +1,4 @@
-package com.thread.Thread.models;
+package com.project.thread.models;
 
 public class TwitterModel extends Model {
 

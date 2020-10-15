@@ -1,6 +1,6 @@
-package com.thread.Thread.models;
+package com.project.thread.models;
 
-public class FaceBookModel extends Model {
+public class FacebookModel extends Model {
 
     @Override
     public long getId() {
