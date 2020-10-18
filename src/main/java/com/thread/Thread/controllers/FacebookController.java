@@ -49,6 +49,14 @@ public class FacebookController extends Controller{
         return tokenSuccess;
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout() {
+        System.out.println("FB Logout");
+        facebook = null;
+        isAppAuthorizationSet = false;
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
+
     @Override
     public ResponseEntity<?> search(@RequestParam String query) {
         System.out.println("FB Search");
