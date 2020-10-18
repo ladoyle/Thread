@@ -1,4 +1,4 @@
-package com.thread.Thread;
+package com.project.thread;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
