@@ -6,11 +6,12 @@ import facebook4j.auth.AccessToken;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/facebook")
-public class FacebookController extends Controller{
+public class FacebookController extends Controller {
     private Facebook facebook;
     private static boolean isAppAuthorizationSet = false;
 
@@ -32,54 +33,42 @@ public class FacebookController extends Controller{
         }
         catch (FacebookException e) {
             e.printStackTrace();
-            return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(
+                    "ERROR: Facebook Service API is down",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        if(extendedToken != null)
-            System.out.println(extendedToken.toString());
-        else
-            System.out.println("empty token");
+        System.out.println(extendedToken);
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout() {
-        System.out.println("FB Logout");
         facebook = null;
         isAppAuthorizationSet = false;
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<?> search(@RequestParam String query) {
-        System.out.println("FB Search");
-        query = query.toLowerCase();
-        ResponseList<Post> posts;
-        ArrayList<Post> results = new ArrayList<>();
+        final String key = query.toLowerCase();
+        List<Post> results;
         try {
-             posts = facebook.getFeed();
+             ResponseList<Post> posts = facebook.getFeed();
+             results = posts
+                     .stream()
+                     .filter(post ->
+                             post.getMessage() != null &&
+                             post.getMessage().toLowerCase().contains(key))
+                     .collect(Collectors.toList());
         }
         catch (FacebookException e) {
             e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        if(posts != null) {
-            for (Post post : posts) {
-                String message = post.getMessage();
-                if (message != null && message.toLowerCase().contains(query) && !results.contains(post))
-                    results.add(post);
-            }
+            return new ResponseEntity<>(
+                    "ERROR: Facebook Service failed search",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return results.isEmpty() ? new ResponseEntity<>(null, HttpStatus.OK)
-                : new ResponseEntity<>(results, HttpStatus.OK);
+        return new ResponseEntity<>(results, HttpStatus.OK);
     }
 
     @PostMapping("/share")

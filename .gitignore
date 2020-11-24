@@ -18,8 +18,6 @@ target/
 *.iws
 *.iml
 *.ipr
-*.properties
-*.yml
 
 ### NetBeans ###
 /nbproject/private/
@@ -34,3 +32,4 @@ build/
 
 ### Keys/Tokens ###
 *.properties
+*.yml

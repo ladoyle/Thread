@@ -18,6 +18,18 @@
 		<java.version>11</java.version>
 	</properties>
 
+	<!-- jcenter/bintray added for the JRAW repository from thatjavanerd -->
+	<repositories>
+		<repository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>jcenter</id>
+			<name>jcenter</name>
+			<url>https://bintray.com</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -48,24 +60,24 @@
 			<version>4.0.7</version>
 		</dependency>
 
+		<!-- Dependency for Facebook scraping -->
 		<dependency>
 			<groupId>org.facebook4j</groupId>
 			<artifactId>facebook4j-core</artifactId>
 			<version>[2.4,)</version>
 		</dependency>
 
-		<!-- Dependency for Facebook scraping -->
 		<dependency>
 			<groupId>org.springframework.social</groupId>
 			<artifactId>spring-social-facebook</artifactId>
 			<version>2.0.3.RELEASE</version>
 		</dependency>
 
-		<!-- Dependency for Instagram API -->
+		<!-- Dependency for Reddit API -->
 		<dependency>
-			<groupId>org.brunocvcunha.instagram4j</groupId>
-			<artifactId>instagram4j</artifactId>
-			<version>1.14</version>
+			<groupId>net.dean.jraw</groupId>
+			<artifactId>JRAW</artifactId>
+			<version>${jraw.version}</version>
 		</dependency>
 
     </dependencies>
