@@ -1,10 +1,12 @@
 package com.project.thread.controllers;
 
-import net.dean.jraw.RedditClient;
-import net.dean.jraw.http.UserAgent;
-import net.dean.jraw.oauth.Credentials;
-import org.springframework.beans.factory.annotation.Value;
+import com.project.thread.exceptions.RedditHttpException;
+import com.project.thread.services.RedditService;
+import com.project.thread.models.RedditModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,19 +14,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/reddit")
 public class RedditController extends Controller {
-    @Value("${reddit.credentials.clientId}")
-    private static String clientId;
 
-    @Value("${reddit.credentials.clientSecret}")
-    private static String clientSecret;
+    private static final RedditService reddit = RedditService.builder().build();
 
-    @Value("${reddit.redirect_uri}")
-    private static String redirectUri;
+    @PostMapping("/login")
+    public ResponseEntity<> login(@RequestBody RedditModel body) {
+        System.out.println("Reddit Login");
 
-    private static final UserAgent userAgent =
-            new UserAgent("web", "com.project.thread", "v1.0", "healfein");
-    private static final Credentials credentials =
-            Credentials.webapp(clientId, clientSecret, redirectUri);
+        boolean authenticated = false;
+
+        try {
+            authenticated = reddit.login(body);
+        }
+        catch (RedditHttpException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(
+                    "ERROR: Reddit Service API is down",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(authenticated, HttpStatus.OK);
+    }
 
     @Override
     ResponseEntity<?> search(String q) {
