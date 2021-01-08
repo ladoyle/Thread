@@ -1,7 +1,7 @@
 package com.project.thread.services;
 
 import com.project.thread.clients.RedditClient;
-import com.project.thread.models.RedditModel;
+import com.project.thread.models.reddit.RedditModel;
 import com.project.thread.models.reddit.RedditAccessToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,12 +17,9 @@ public class RedditService {
     private final RedditClient redditClient;
 
     public ResponseEntity<?> login(RedditModel body) {
+        String authorization = body.getId() + ":" + body.getKey();
         String authorizationCredentials = Base64.getEncoder().encodeToString(
-                new byte[]{Byte.parseByte(
-                        body.getId() +
-                                ":" +
-                                body.getKey()
-                )}
+                authorization.getBytes()
         );
 
         RedditAccessToken redditAccessToken;
