@@ -32,6 +32,7 @@ public class RedditService {
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
         redditClient.setAccessToken(redditAccessToken.getAccessToken());
+        System.out.println(redditAccessToken.toString());
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
