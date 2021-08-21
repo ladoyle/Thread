@@ -4,16 +4,13 @@ import com.project.thread.services.RedditService;
 import com.project.thread.models.reddit.RedditModel;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/reddit")
-public class RedditController extends Controller {
+public class RedditController {
 
     private final RedditService reddit;
 
@@ -23,7 +20,7 @@ public class RedditController extends Controller {
         return reddit.login(body);
     }
 
-    @Override
+    @GetMapping("/search")
     ResponseEntity<?> search(String q) {
         return null;
     }

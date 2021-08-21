@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/facebook")
-public class FacebookController extends Controller {
+public class FacebookController {
     private Facebook facebook;
     private static boolean isAppAuthorizationSet = false;
 
@@ -48,7 +48,7 @@ public class FacebookController extends Controller {
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
-    @Override
+    @GetMapping("/search")
     public ResponseEntity<?> search(@RequestParam String query) {
         final String key = query.toLowerCase();
         List<Post> results;

@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/twitter")
-public class TwitterController extends Controller {
+public class TwitterController {
     private Twitter twitter;
 
     /*
@@ -106,7 +106,7 @@ public class TwitterController extends Controller {
     }
 
 
-    @Override
+    @GetMapping("/search")
     public ResponseEntity<List<Status>> search(@RequestParam String q) {
         //Set up decoder to decode encoded query
         byte[] encodedBytes = Base64.getEncoder().encode(q.getBytes());
