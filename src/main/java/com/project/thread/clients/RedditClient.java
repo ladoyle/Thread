@@ -5,6 +5,7 @@ import com.project.thread.core.ApplicationConstants.*;
 import com.project.thread.core.headers.RedditHeaders;
 import com.project.thread.core.httpparameters.RedditParams;
 import com.project.thread.models.reddit.RedditAccessToken;
+import com.project.thread.models.reddit.RedditBasicAuthToken;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -22,7 +23,11 @@ public class RedditClient {
         this.httpClient = WebClient.builder().build();
     }
 
-    public RedditAccessToken login(String basicAuthorization, String token) {
+    public RedditBasicAuthToken authorize(String basicAuth) {
+        return null;
+    }
+
+    public RedditAccessToken login(RedditBasicAuthToken basicAuthToken, String token) {
 
         if(!authenticated) {
             this.setAccessToken(token);
@@ -38,7 +43,7 @@ public class RedditClient {
                                     .build()
                     )
                     .header(RedditHeaders.USER_AGENT.getKey(), RedditHeaders.USER_AGENT.getValue())
-                    .header(RedditHeaders.AUTHORIZATION.getKey(), basicAuthorization);
+                    .header(RedditHeaders.AUTHORIZATION.getKey(), basicAuthToken.getToken());
             return Objects.requireNonNull(request.exchange().block()).bodyToMono(RedditAccessToken.class).block();
         } else {
             return RedditAccessToken.builder()

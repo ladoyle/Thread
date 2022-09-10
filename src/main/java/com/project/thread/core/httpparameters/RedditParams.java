@@ -13,6 +13,6 @@ public enum RedditParams {
     GRANT_TYPE(GRANT_TYPE_H, GRANT_TYPE_V),
     REFRESH_TOKEN(REFRESH_TOKEN_H, StringUtils.EMPTY);
 
-    private String key;
-    private String value;
+    private final String key;
+    private final String value;
 }

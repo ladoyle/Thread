@@ -13,6 +13,6 @@ public enum RedditHeaders {
     USER_AGENT(USER_AGENT_H, USER_AGENT_V),
     AUTHORIZATION(AUTHORIZATION_H, StringUtils.EMPTY);
 
-    String key;
-    String value;
+    final String key;
+    final String value;
 }
